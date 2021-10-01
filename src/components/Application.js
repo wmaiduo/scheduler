@@ -5,55 +5,33 @@ import DayList from "./DayList";
 import "components/Application.scss";
 import Appointment from "./Appointment";
 
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      },
-    },
-  },
-  {
-    id: 3,
-    time: "2pm",
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Test Name1",
-      interviewer: {
-        id: 2,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
-      },
-    },
-  },
-  {
-    id: 5,
-    time: "4pm",
-  },
-];
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDyas] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+  });
+
   useEffect(() => {
     const daysURL = "http://localhost:8001/api/days";
-    axios.get(daysURL).then((response) => {
-      console.log(response);
+    const appointmentsURL = "http://localhost:8001/api/appointments";
+    Promise.all([
+      Promise.resolve(axios.get(daysURL)),
+      Promise.resolve(axios.get(appointmentsURL)),
+    ]).then((all) => {
+      setState((prev) => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+      }));
     });
   }, []);
-  const appointmentsArray = appointments.map((appointment) => (
+  const setDay = (day) => setState((prev) => ({ ...prev, day }));
+  // const setDays = (days) => setState((prev) => ({ ...prev, days }));
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const appointmentsArray = dailyAppointments.map((appointment) => (
     <Appointment key={appointment.id} {...appointment} />
   ));
   return (
@@ -66,7 +44,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={days} day={day} setDay={setDay} />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
