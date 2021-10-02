@@ -7,3 +7,7 @@ export function getAppointmentsForDay(state, name) {
   }
   return result; 
 }
+
+export function getInterview(state, interview) {
+  return interview ? { ...interview, interviewer: state.interviewers[interview.interviewer] } : null;
+}
