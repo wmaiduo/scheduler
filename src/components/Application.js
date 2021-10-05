@@ -49,9 +49,7 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />{" "}
       </section>
-      <section className="schedule">
-        {appointmentsArray}
-      </section>
+      <section className="schedule">{appointmentsArray}</section>
     </main>
   );
 }

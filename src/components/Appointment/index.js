@@ -20,6 +20,7 @@ const DELETING = "DELETING";
 const SAVING = "SAVING";
 const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
+const EDIT = "EDIT";
 
 export default function Appointment(props) {
   let { mode, transition, back } = useVisualMode(
@@ -66,6 +67,7 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={showDelete}
+          onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && (
@@ -85,7 +87,18 @@ export default function Appointment(props) {
       {mode === DELETING && <Status message={"Deleting"} />}
       {mode === ERROR_SAVE && <Error message="Could not save" />}
       {mode === SAVING && <Status message={"Saving"} />}
-      {mode === ERROR_DELETE && <Error message={"could not delete message "} onClose={() => back()}/>}
+      {mode === ERROR_DELETE && (
+        <Error message={"could not delete message "} onClose={() => back()} />
+      )}
+      {mode === EDIT && (
+        <Form
+          interviewers={props.interviewers}
+          onCancel={() => back()}
+          onSave={save}
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.name}
+        />
+      )}
     </Fragment>
   );
 }
