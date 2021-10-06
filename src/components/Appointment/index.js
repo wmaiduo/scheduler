@@ -96,7 +96,7 @@ export default function Appointment(props) {
           onCancel={() => back()}
           onSave={save}
           name={props.interview.student}
-          interviewer={props.interview.interviewer.name}
+          interviewer={props.interview.interviewer.id}
         />
       )}
     </Fragment>

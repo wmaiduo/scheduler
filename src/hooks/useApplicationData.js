@@ -9,6 +9,25 @@ export default function useApplicationData() {
     interviewers: {},
   });
 
+  function getSpots() {
+    // const updatedDays = state.days;
+    let appointmentsForDay = [];
+    let daysID;
+    for (const id in state.days) {
+      if (state.day === state.days[id].name) {
+        appointmentsForDay = state.days[id].appointments;
+        daysID = state.days[id].id;
+      }
+    }
+    let result = 0;
+    for (const id of appointmentsForDay) {
+      if (!state.appointments[id].interview) {
+        ++result;
+      }
+    }
+    return {result, daysID};
+  }
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -19,9 +38,12 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, {interview})
+      .put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then((response) => {
-        setState({...state, appointments});
+        const {result, daysID} = getSpots();
+        let updatedDays = state.days;
+        updatedDays[daysID - 1].spots = result - 1;
+        setState({ ...state, appointments, days: updatedDays });
       });
   }
 
@@ -29,25 +51,20 @@ export default function useApplicationData() {
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`, {})
       .then((response) => {
-        // const updatedDays = state.days;
-        let appointmentsForDay = [];
-        let daysID;
-        for (const id in state.days) {
-          if (state.day === state.days[id].name) {
-            appointmentsForDay = state.days[id].appointments;
-            daysID = state.days[id].id;
-          }
-        }
-
-        let result = 1;
-        for (const id of appointmentsForDay) {
-          if (!state.appointments[id].interview) {
-            ++result;
-          }
-        }
+        console.log("called");
+        const appointment = {
+          ...state.appointments[id],
+          interview: null,
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment,
+        };
+        console.log(getSpots());
+        const {result, daysID} = getSpots();
         let updatedDays = state.days;
-        updatedDays[daysID - 1].spots = result;
-        setState({ ...state, days: updatedDays });
+        updatedDays[daysID - 1].spots = result + 1;
+        setState({ ...state, appointments, days: updatedDays });
       });
   }
 
