@@ -1,4 +1,4 @@
-import { getAppointmentsForDay, getInterviewersForDay ,getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterviewersForDay ,getInterview } from "./selectors";
 
 const state = {
   days: [
@@ -48,7 +48,9 @@ const state = {
       interview: { student: "student3", interviewer: 5 },
     },
     9: {
-
+      id: 9,
+      time: "7pm",
+      interview: { student: "student2", interviewer: 5 },
     }
   },
   interviewers: {

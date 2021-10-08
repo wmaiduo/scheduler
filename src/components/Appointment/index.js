@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import "components/Appointment/styles.scss";
+import "./styles.scss";
 
 import Header from "./Header";
 import Show from "./Show";
@@ -10,7 +10,7 @@ import Confirm from "./Confirm";
 import Status from "./Status";
 import Error from "./Error";
 
-import useVisualMode from "hooks/useVisualMode";
+import useVisualMode from "../../hooks/useVisualMode";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
