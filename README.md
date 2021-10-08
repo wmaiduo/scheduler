@@ -30,4 +30,4 @@ npm run cypress
 
 !["Landing Page"](./docs/initial.png)
 !["Add New appointment"](./docs/new-form.png)
-!["Cancel Appointment"](./docs/delete.png)
+!["Cancel Appointment"](./docs/cancel.png)
