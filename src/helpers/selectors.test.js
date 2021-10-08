@@ -6,16 +6,19 @@ const state = {
       id: 1,
       name: "Monday",
       appointments: [1, 2, 3],
+      interviewers: [2]
     },
     {
       id: 2,
       name: "Tuesday",
       appointments: [4, 5],
+      interviewer: [2],
     },
     {
       id: 3,
       name: "Wednesday",
       appointments: [6, 7, 8, 9],
+      interviewers: [3, 4, 5],
     }
   ],
   appointments: {
@@ -84,6 +87,7 @@ const state = {
 
 test("getInterviewersForDay returns an array", () => {
   const result = getInterviewersForDay(state, "Monday");
+  console.log({result});
   expect(Array.isArray(result)).toBe(true);
 });
 
