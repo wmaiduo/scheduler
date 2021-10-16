@@ -11,7 +11,7 @@
     "react-dom": "^16.9.0",
     "react-hooks-testing-library": "^0.6.0",
     "react-scripts": "3.0.0",
-    "react-test-renderer": "^17.0.2"
+    "react-test-renderer": "^16.9.0"
   },
   "scripts": {
     "cypress": "cypress open -P .",
@@ -43,6 +43,7 @@
     "@storybook/react": "^5.0.10",
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.7",
+    "@testing-library/react-hooks": "^7.0.2",
     "babel-loader": "^8.0.5",
     "node-sass": "^4.14.0",
     "prop-types": "^15.7.2"

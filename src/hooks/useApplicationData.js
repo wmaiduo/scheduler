@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const APP_HOST = process.env.REACT_APP_API_HOST
+
 export default function useApplicationData() {
   const [state, setState] = useState({
     day: "Monday",
@@ -38,7 +40,7 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, { interview })
+      .put(`${APP_HOST}/api/appointments/${id}`, { interview })
       .then((response) => {
         const {result, daysID} = getSpots();
         let updatedDays = state.days;
@@ -49,9 +51,8 @@ export default function useApplicationData() {
 
   function cancelInterview(id) {
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, {})
+      .delete(`${APP_HOST}/api/appointments/${id}`, {})
       .then((response) => {
-        console.log("called");
         const appointment = {
           ...state.appointments[id],
           interview: null,
@@ -60,7 +61,6 @@ export default function useApplicationData() {
           ...state.appointments,
           [id]: appointment,
         };
-        console.log(getSpots());
         const {result, daysID} = getSpots();
         let updatedDays = state.days;
         updatedDays[daysID - 1].spots = result + 1;
@@ -69,9 +69,9 @@ export default function useApplicationData() {
   }
 
   useEffect(() => {
-    const daysURL = "http://localhost:8001/api/days";
-    const appointmentsURL = "http://localhost:8001/api/appointments";
-    const interviewresURL = "http://localhost:8001/api/interviewers";
+    const daysURL = `${APP_HOST}/api/days`;
+    const appointmentsURL = `${APP_HOST}/api/appointments`;
+    const interviewresURL = `${APP_HOST}/api/interviewers`;
     Promise.all([
       Promise.resolve(axios.get(daysURL)),
       Promise.resolve(axios.get(appointmentsURL)),
